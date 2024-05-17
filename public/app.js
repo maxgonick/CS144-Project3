@@ -1,5 +1,4 @@
 import Card from "./card.js";
-// eslint-disable-next-line no-unused-vars
 import Mover from "./mover.js";
 
 export default class App {
