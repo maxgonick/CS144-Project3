@@ -104,10 +104,13 @@ header > h1 {
   margin-inline: 5rem;
   display: flex;
   flex-direction: row;
+  height: 100%;
 }
 
 .column {
   flex: 1;
+  padding-bottom: 3rem;
+  height: 100%
 }
 
 #todo, #done {
@@ -149,4 +152,8 @@ header > h1 {
 
 .buttons > * {
   padding: 0;
+}
+
+body {
+  height: 100vh;
 }

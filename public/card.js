@@ -1,5 +1,6 @@
 /* The text to use when description is empty */
 const NO_DESCRIPTION_TEXT = "(No description)";
+import hexToBrightness from "./hexToBrightness";
 export default class Card {
   constructor(title, color) {
     //TODO
@@ -69,6 +70,23 @@ export default class Card {
     const newElement = document.querySelector(".template").cloneNode(true);
     newElement.classList.remove("template");
     newElement.style.backgroundColor = self.color;
+    console.log(self.color)
+    const brightness = hexToBrightness(self.color);
+    console.log(brightness);
+    if (brightness >= 0.5) {
+      newElement.style.color = "black";
+      const buttons = newElement.querySelectorAll(".buttons > *");
+      buttons.forEach(element => {
+        element.style.color = "black";
+      });
+    }
+    else if (brightness < 0.5) {
+      newElement.style.color = "white";
+      const buttons = newElement.querySelectorAll(".buttons > *");
+      buttons.forEach(element => {
+        element.style.color = "white";
+      });
+    }
     const title = newElement.querySelector(".title");
     title.innerText = self.title;
     newElement.querySelector(".delete").addEventListener("click", deleteEvent);
