@@ -10,7 +10,60 @@ const formSubmit = (event) => {
   app.addCard("todo", title, color);
   document.querySelector("#addCard").reset();
 };
+
+
+function calculateSettingAsThemeString({ localStorageTheme, systemSettingDark }) {
+  if (localStorageTheme !== null) {
+    return localStorageTheme;
+  }
+
+  if (systemSettingDark.matches) {
+    return "dark";
+  }
+
+  return "light";
+}
+
 const main = () => {
+const systemSettingDark = window.matchMedia("(prefers-color-scheme: dark)");
+const localStorageTheme = localStorage.getItem("theme");
+
+let currentThemeSetting = calculateSettingAsThemeString({ localStorageTheme, systemSettingDark });
+
+
+const button = document.querySelector("[data-theme-toggle]");
+button.addEventListener("click", () => {
+  const newTheme = currentThemeSetting === "dark" ? "light" : "dark";
+
+  // update the button text
+  const svgSource = newTheme === "dark" ? "./icons/moon-fill.svg" : "./icons/sun-fill.svg";
+  const ctaLabel = newTheme === "dark" ? "Change to Light" : "Change to Dark"
+  document.querySelector("#svg-src").src = svgSource;
+
+  // use an aria-label if you are omitting text on the button
+  // and using sun/moon icons, for example
+  button.setAttribute("aria-label", ctaLabel);
+
+  // update theme attribute on HTML to switch theme in CSS
+  document.querySelector("html").setAttribute("data-theme", newTheme);
+
+  // update in local storage
+  localStorage.setItem("theme", newTheme);
+
+  // update the currentThemeSetting in memory
+  currentThemeSetting = newTheme;
+})
+
+  const svg = document.querySelector("#svg-src")
+  if (currentThemeSetting == "light") {
+    svg.src = "./icons/sun-fill.svg"
+    svg.alt = "Sun Icon"
+    document.querySelector("html").setAttribute("data-theme", currentThemeSetting);
+  } else {
+    svg.src = "./icons/moon-fill.svg"
+    svg.alt = "Moon Icon"
+    document.querySelector("html").setAttribute("data-theme", currentThemeSetting);
+  }
   const addForm = document.querySelector("#addCard");
   addForm.addEventListener("submit", formSubmit);
 

@@ -1,6 +1,20 @@
 /* The text to use when description is empty */
 const NO_DESCRIPTION_TEXT = "(No description)";
-import hexToBrightness from "./hexToBrightness";
+function hexToBrightness(hex) {
+  // Remove the leading '#' if present
+  hex = hex.replace('#', '');
+
+  // Convert the hexadecimal string to RGB values
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  // Calculate the brightness using the formula:
+  // Brightness = (0.2126 * R + 0.7152 * G + 0.0722 * B) / 255
+  const brightness = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+  if (isNaN(brightness)) return 1;
+  return brightness;
+}
 export default class Card {
   constructor(title, color) {
     //TODO
@@ -82,7 +96,7 @@ export default class Card {
     }
     else if (brightness < 0.5) {
       newElement.style.color = "white";
-      const buttons = newElement.querySelectorAll(".buttons > *");
+      const buttons = newElement.querySelectorAll(".buttons > :not(img)");
       buttons.forEach(element => {
         element.style.color = "white";
       });

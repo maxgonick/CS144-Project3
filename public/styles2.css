@@ -1,3 +1,16 @@
+[data-theme="light"] {
+  --title-bg: white;
+  --title-color: black;
+  --whitespace-color: white;
+  --accent-color: #f0f0f0;
+}
+
+[data-theme="dark"] {
+  --title-bg: gray;
+  --title-color: white;
+  --whitespace-color: darkgray;
+  --accent-color: #e8e8e8;
+}
 
 /*
   1. Use a more-intuitive box-sizing model.
@@ -76,6 +89,11 @@ header > h1 {
 
 #cardTitle {
     width: 20em;
+    background-color: var(--title-bg);
+    color: var(--title-color);
+}
+#cardTitle::placeholder {
+  color: var(--title-color);
 }
 
 #cardColor {
@@ -87,6 +105,8 @@ header > h1 {
     color: black;
     padding: 0.25rem 1rem;
 }
+
+
 
 /* .buttons > * {
     padding: 0 0.25rem;
@@ -114,12 +134,12 @@ header > h1 {
 }
 
 #todo, #done {
-  background-color: #f0f0f0;
+  background-color: var(--accent-color);
   padding: 0 .5rem;
 }
 
 #doing {
-  background-color: white;
+  background-color: var(--whitespace-color);
   padding: 0 0.5rem;
 }
 
@@ -156,4 +176,10 @@ header > h1 {
 
 body {
   height: 100vh;
+  background-color: var(--whitespace-color);
+}
+
+#svg {
+  background-color: inherit;
+  border: none;
 }

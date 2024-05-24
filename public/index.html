@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8">
     <title>Task Board | Assignment 2</title>
@@ -8,7 +8,7 @@
     <script type="module" src="/lib/client/updater.js"></script>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles2.css">
-    <script type="module" src="index.js"></script>
+    <script type="module" src="index.js" defer></script>
   </head>
   <body>
     <header>
@@ -18,6 +18,7 @@
         <input type="text" name="title" id="cardTitle" placeholder="Title" required>
         <input type="color" name="color" id="cardColor" placeholder="Color">
         <button type="submit" id="addButton">Add</button>
+        <button id="svg" type="button" aria-label="Change light/dark mode" data-theme-toggle><img id="svg-src"></img></button>
       </form>
     </header>
 
