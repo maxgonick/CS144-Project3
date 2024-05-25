@@ -6,7 +6,6 @@ export default class Mover {
     //TODO
     self.active = false;
   }
-
   startMoving(card, cardElement) {
     //Helper Functions
     const moveCardEvent = (event) => {
@@ -14,7 +13,7 @@ export default class Mover {
       card.classList.remove("moving");
       targetElement.insertAdjacentElement("afterend", card);
       this.stopMoving();
-      cardElement.saveState()
+      cardElement.saveState();
     };
 
     //TODO
@@ -45,6 +44,4 @@ export default class Mover {
     }
     self.active = false;
   }
-
-  //TODO
 }

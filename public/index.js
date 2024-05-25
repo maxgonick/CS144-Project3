@@ -54,8 +54,6 @@ button.addEventListener("click", () => {
   const ctaLabel = newTheme === "dark" ? "Change to Light" : "Change to Dark"
   document.querySelector("#svg-src").src = svgSource;
 
-  // use an aria-label if you are omitting text on the button
-  // and using sun/moon icons, for example
   button.setAttribute("aria-label", ctaLabel);
 
   // update theme attribute on HTML to switch theme in CSS
@@ -68,20 +66,18 @@ button.addEventListener("click", () => {
   currentThemeSetting = newTheme;
 })
 
-  const svg = document.querySelector("#svg-src")
+  const svg = document.querySelector("#svg-src");
   if (currentThemeSetting == "light") {
-    svg.src = "./icons/sun-fill.svg"
-    svg.alt = "Sun Icon"
+    svg.src = "./icons/sun-fill.svg";
+    svg.alt = "Sun Icon";
     document.querySelector("html").setAttribute("data-theme", currentThemeSetting);
   } else {
-    svg.src = "./icons/moon-fill.svg"
-    svg.alt = "Moon Icon"
+    svg.src = "./icons/moon-fill.svg";
+    svg.alt = "Moon Icon";
     document.querySelector("html").setAttribute("data-theme", currentThemeSetting);
   }
   const addForm = document.querySelector("#addCard");
   addForm.addEventListener("submit", formSubmit);
-
-
 
 
   //Retrieve Local Storage 
@@ -89,7 +85,6 @@ button.addEventListener("click", () => {
   for (let key in tasks) {
     tasks[key].forEach(element => {
       app.addCard(key, (element.text || ""), rgbToHex(element.color));
-      
     });
   }
 
