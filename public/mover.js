@@ -7,21 +7,20 @@ export default class Mover {
     self.active = false;
   }
 
-  startMoving(card) {
+  startMoving(card, cardElement) {
     //Helper Functions
-    console.log(self.active);
     const moveCardEvent = (event) => {
       const targetElement = event.target.previousSibling;
       card.classList.remove("moving");
       targetElement.insertAdjacentElement("afterend", card);
       this.stopMoving();
+      cardElement.saveState()
     };
 
     //TODO
     if (self.active) {
       return;
     }
-    console.log("in moving");
     card.classList.add("moving");
     const nodeList = document.querySelectorAll(".columnTitle:not(.template), .card:not(.template)");
     for (const node of nodeList) {

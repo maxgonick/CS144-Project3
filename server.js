@@ -1,7 +1,7 @@
 import express from "express";
 import http from "http";
 import path from "path";
-
+import process from "process";
 import updater from "./lib/server/updater.js";
 
 const PORT = process.env.PORT || 1930;

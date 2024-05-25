@@ -15,6 +15,16 @@ function hexToBrightness(hex) {
   if (isNaN(brightness)) return 1;
   return brightness;
 }
+
+class Task {
+  constructor (title, text, color) {
+    this.title = title;
+    this.text = text;
+    this.color = color;
+  }
+}
+
+
 export default class Card {
   constructor(title, color) {
     //TODO
@@ -22,23 +32,55 @@ export default class Card {
     self.color = color;
     self.card = null;
   }
+  saveState() {
+    const state = {
+      "todo": [],
+      "doing": [],
+      "done": [],
+    }
+
+    document.querySelectorAll("#todo > *:not(h2, .moveHere)").forEach(element => {
+      const elementTitle = element.querySelector(".title").innerText || "";
+      const elementColor = element.style.backgroundColor;
+      const elementText = element.querySelector(".description").innerText || "";
+      const task = new Task(elementTitle, elementText, elementColor)
+      state.todo.push(task)
+    })
+    document.querySelectorAll("#doing > *:not(h2, .moveHere)").forEach(element => {
+      const elementTitle = element.querySelector(".title").innerText || "";
+      const elementColor = element.style.backgroundColor;
+      const elementText = element.querySelector(".description").innerText || "";
+      const task = new Task(elementTitle, elementText, elementColor)
+      state.doing.push(task)
+    })
+    document.querySelectorAll("#done > *:not(h2, .moveHere)").forEach(element => {
+      const elementTitle = element.querySelector(".title").innerText || "";
+      const elementColor = element.style.backgroundColor;
+      const elementText = element.querySelector(".description").innerText || "";
+      const task = new Task(elementTitle, elementText, elementColor)
+      state.done.push(task)
+    })
+    localStorage.setItem('state', JSON.stringify(state))
+  }
+
+
 
   addToCol(colElem, mover) {
     //TODO
     let foo = new Set();
     //Helper Functions
     const deleteEvent = (event) => {
-      console.log("WORK");
       mover.stopMoving();
       const cardNode = event.target.closest(".card");
       cardNode.remove();
+      this.saveState();
     };
     const leaveEditEvent = (event) => {
       const cardNode = event.target.closest(".card");
       const editField = cardNode.querySelector(".editDescription");
-      console.log(editField.value);
       cardNode.querySelector(".description").innerHTML = editField.value;
       editField.classList.add("hidden");
+      this.saveState()
     };
     const editEvent = (event) => {
       const cardNode = event.target.closest(".card");
@@ -47,12 +89,12 @@ export default class Card {
       editField.value = cardNode.querySelector(".description").innerText;
       editField.focus();
       editField.select();
+      this.saveState();
     };
     const moveEvent = (event) => {
-      console.log(event.target, " saw this event");
       mover.stopMoving();
-      console.log(event.target.closest(".card"));
-      mover.startMoving(event.target.closest(".card"));
+      mover.startMoving(event.target.closest(".card"), this);
+      this.saveState()
     };
     const dropEvent = (event) => {
       event.preventDefault();
@@ -66,39 +108,65 @@ export default class Card {
         reader.readAsText(file);
       }
       event.currentTarget.classList.remove("dragoverZone");
+      this.saveState()
     };
     const dragenterEvent = (event) => {
       event.preventDefault();
       foo.add(event.target);
-      console.log("enter");
       event.currentTarget.classList.add("dragoverZone");
     };
     const dragleaveEvent = (event) => {
       event.preventDefault();
       foo.delete(event.target);
-      console.log("leave", event.target, this);
       if (foo.size === 0) {
         event.currentTarget.classList.remove("dragoverZone");
       }
+      this.saveState()
     };
     const newElement = document.querySelector(".template").cloneNode(true);
     newElement.classList.remove("template");
     newElement.style.backgroundColor = self.color;
-    console.log(self.color)
     const brightness = hexToBrightness(self.color);
-    console.log(brightness);
     if (brightness >= 0.5) {
       newElement.style.color = "black";
       const buttons = newElement.querySelectorAll(".buttons > *");
       buttons.forEach(element => {
-        element.style.color = "black";
+        const svg = element.querySelector("img")
+        const source = svg.src.split("/").pop()
+        switch (source) {
+          case "deletelight.svg":
+            svg.src = "./icons/delete.svg";
+            break;
+          case "editlight.svg":
+            svg.src = "./icons/edit.svg";
+            break;
+          case "movelight.svg":
+            svg.src = "./icons/move.svg";
+            break;
+          default:
+            break;
+        }
       });
     }
     else if (brightness < 0.5) {
       newElement.style.color = "white";
       const buttons = newElement.querySelectorAll(".buttons > :not(img)");
       buttons.forEach(element => {
-        element.style.color = "white";
+        const svg = element.querySelector("img")
+        const source = svg.src.split("/").pop()
+        switch (source) {
+          case "delete.svg":
+            svg.src = "./icons/deletelight.svg";
+            break;
+          case "edit.svg":
+            svg.src = "./icons/editlight.svg";
+            break;
+          case "move.svg":
+            svg.src = "./icons/movelight.svg";
+            break;
+          default:
+            break;
+        }
       });
     }
     const title = newElement.querySelector(".title");
@@ -116,11 +184,10 @@ export default class Card {
       event.preventDefault();
     });
     colElem.append(newElement);
+    this.saveState();
   }
   setDescription(text) {
-    //TODO
     self.card.querySelector(".description").innerText = text;
+    this.saveState();
   }
-
-  //TODO
 }

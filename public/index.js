@@ -23,6 +23,20 @@ function calculateSettingAsThemeString({ localStorageTheme, systemSettingDark })
 
   return "light";
 }
+function rgbToHex(rgbString) {
+  const rgbValues = rgbString.match(/\d+/g).map(Number);
+  const componentToHex = (c) => {
+    const hex = c.toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+  };
+
+  return (
+    "#" +
+    componentToHex(rgbValues[0]) +
+    componentToHex(rgbValues[1]) +
+    componentToHex(rgbValues[2])
+  );
+}
 
 const main = () => {
 const systemSettingDark = window.matchMedia("(prefers-color-scheme: dark)");
@@ -67,10 +81,17 @@ button.addEventListener("click", () => {
   const addForm = document.querySelector("#addCard");
   addForm.addEventListener("submit", formSubmit);
 
-  /* You can add cards to the board here so you don't have to type them all in every time the page refreshes. Here are a few examples: */
-  // app.addCard("doing", "Write Card class", "lightblue");
-  // app.addCard("todo", "Write App class", "khaki");
-  // let card = app.addCard("todo", "Test everything!", "pink");
-  // card.setDescription("Hopefully we've been testing throughout the process...");
+
+
+
+  //Retrieve Local Storage 
+  let tasks = JSON.parse(localStorage.getItem("state")) || [];
+  for (let key in tasks) {
+    tasks[key].forEach(element => {
+      app.addCard(key, (element.text || ""), rgbToHex(element.color));
+      
+    });
+  }
+
 };
 main();
