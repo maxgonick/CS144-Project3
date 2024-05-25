@@ -129,6 +129,7 @@ export default class Card {
     if (brightness >= 0.5) {
       newElement.style.color = "black";
       const buttons = newElement.querySelectorAll(".buttons > *");
+      newElement.querySelector(".editDescription").style.color = "black";
       buttons.forEach(element => {
         const svg = element.querySelector("img");
         const source = svg.src.split("/").pop();
@@ -150,6 +151,7 @@ export default class Card {
     else if (brightness < 0.5) {
       newElement.style.color = "white";
       const buttons = newElement.querySelectorAll(".buttons > :not(img)");
+      newElement.querySelector(".editDescription").style.color = "white";
       buttons.forEach(element => {
         const svg = element.querySelector("img");
         const source = svg.src.split("/").pop();
@@ -167,6 +169,9 @@ export default class Card {
             break;
         };
       });
+    }
+    else {
+      ;
     }
     const title = newElement.querySelector(".title");
     title.innerText = self.title;
